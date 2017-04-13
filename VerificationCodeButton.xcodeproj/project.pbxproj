@@ -12,6 +12,9 @@
 		526658FF1E9F182F00D3351B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 526658FD1E9F182F00D3351B /* Main.storyboard */; };
 		526659011E9F182F00D3351B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 526659001E9F182F00D3351B /* Assets.xcassets */; };
 		526659041E9F182F00D3351B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 526659021E9F182F00D3351B /* LaunchScreen.storyboard */; };
+		526659111E9F1FB900D3351B /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5266590E1E9F1FB900D3351B /* Screen.swift */; };
+		526659121E9F1FB900D3351B /* SMSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5266590F1E9F1FB900D3351B /* SMSButton.swift */; };
+		526659131E9F1FB900D3351B /* SMSButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 526659101E9F1FB900D3351B /* SMSButtonStyle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +25,9 @@
 		526659001E9F182F00D3351B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		526659031E9F182F00D3351B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		526659051E9F182F00D3351B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5266590E1E9F1FB900D3351B /* Screen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
+		5266590F1E9F1FB900D3351B /* SMSButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMSButton.swift; sourceTree = "<group>"; };
+		526659101E9F1FB900D3351B /* SMSButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMSButtonStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +60,7 @@
 		526658F81E9F182F00D3351B /* VerificationCodeButton */ = {
 			isa = PBXGroup;
 			children = (
+				5266590D1E9F1F9700D3351B /* Source */,
 				526658F91E9F182F00D3351B /* AppDelegate.swift */,
 				526658FB1E9F182F00D3351B /* ViewController.swift */,
 				526658FD1E9F182F00D3351B /* Main.storyboard */,
@@ -62,6 +69,16 @@
 				526659051E9F182F00D3351B /* Info.plist */,
 			);
 			path = VerificationCodeButton;
+			sourceTree = "<group>";
+		};
+		5266590D1E9F1F9700D3351B /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				5266590E1E9F1FB900D3351B /* Screen.swift */,
+				5266590F1E9F1FB900D3351B /* SMSButton.swift */,
+				526659101E9F1FB900D3351B /* SMSButtonStyle.swift */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,7 +155,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				526658FC1E9F182F00D3351B /* ViewController.swift in Sources */,
+				526659131E9F1FB900D3351B /* SMSButtonStyle.swift in Sources */,
+				526659121E9F1FB900D3351B /* SMSButton.swift in Sources */,
 				526658FA1E9F182F00D3351B /* AppDelegate.swift in Sources */,
+				526659111E9F1FB900D3351B /* Screen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,6 +322,7 @@
 				5266590A1E9F182F00D3351B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
