@@ -10,14 +10,20 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    let button = UIButton(type: .system)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        view.backgroundColor = UIColor.white
+        button.center = view.center
+        button.bounds = CGRect(x: 0, y: 0, width: 100, height: 50)
+        button.setTitle("next page", for: .normal)
+        button.addTarget(self, action: #selector(respondsToButton(sender:)), for: .touchUpInside)
+        view.addSubview(button)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func respondsToButton(sender: UIButton) {
+        navigationController?.pushViewController(ButtonViewController(), animated: true)
     }
 
 

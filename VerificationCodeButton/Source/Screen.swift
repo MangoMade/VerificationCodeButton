@@ -1,10 +1,4 @@
-//
-//  Screen.swift
-//  HomerMerchant
-//
-//  Created by Mango on 16/7/4.
-//  Copyright © 2016年 Homer. All rights reserved.
-//
+
 
 import UIKit
 
