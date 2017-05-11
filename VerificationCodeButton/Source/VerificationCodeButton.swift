@@ -5,22 +5,26 @@ import UIKit
 
 class VerificationCodeButton: UIButton {
     
-    private enum SMSCodeButtonState{
+    private enum State {
         case sending
         case waiting
         case normal
     }
     
+    private struct Const {
+        static let userDefaultsKey = "Verification-Code-Button-Dic"
+    }
+    
     // MARK: properties
     var didTouchUpInside : (() -> Void)?
     
-    private let userDefaultsKey : String
+    private let when : String
     
     private let style: VerificationCodeButtonStyle
     
     private var sendInterval : TimeInterval = 60
     
-    private var buttonState = SMSCodeButtonState.normal {
+    private var buttonState = State.normal {
         didSet{
             switch buttonState {
             case .normal:
@@ -33,11 +37,29 @@ class VerificationCodeButton: UIButton {
         }
     }
     
-    private var lastTimeSendCode = NSDate() {
+    private var lastSending = NSDate() {
         didSet{
-            UserDefaults.standard.setValue(NSDate(), forKey: userDefaultsKey)
+            UserDefaults.standard.setValue(NSDate(), forKey: when)
         }
     }
+    
+    private var localLastSending: NSDate? {
+        get {
+            guard let dic = UserDefaults.standard.value(forKey: Const.userDefaultsKey) as? [String: NSDate] else {
+                return nil
+            }
+            return dic[when]
+        }
+        set {
+            var dic = UserDefaults.standard.value(forKey: Const.userDefaultsKey) as? [String: NSDate]
+            if dic == nil {
+                dic = [String: NSDate]()
+            }
+            dic![when] = newValue
+            UserDefaults.standard.setValue(dic!, forKey: Const.userDefaultsKey)
+        }
+    }
+    
     private var timer : Timer?
     
     // MARK: init
@@ -45,15 +67,15 @@ class VerificationCodeButton: UIButton {
     init(when: String,
          style: VerificationCodeButtonStyle)
     {
-        userDefaultsKey = when
+        self.when = when
         self.style = style
         
         super.init(frame: .zero)
         
         self.addTarget(self, action: #selector(respondsToTap), for: .touchUpInside)
         style.normalState(self)
-        if let lastTime = UserDefaults.standard.value(forKey: userDefaultsKey) as? NSDate{
-            self.lastTimeSendCode = lastTime
+        if let lastTime = UserDefaults.standard.value(forKey: self.when) as? NSDate {
+            self.lastSending = lastTime
             setATimer()
         }
         self.layer.cornerRadius = Screen.scale * 2
@@ -63,36 +85,42 @@ class VerificationCodeButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func respondsToTap(){
-        if self.buttonState == .normal{
+    func respondsToTap() {
+        if self.buttonState == .normal {
             self.buttonState = .sending
             didTouchUpInside?()
         }
     }
     
-    func countDown(sendInterval: TimeInterval = 60){
-        lastTimeSendCode = NSDate()
+    func countDown(sendInterval: TimeInterval = 60) {
+        lastSending = NSDate()
         self.sendInterval = sendInterval
         setATimer()
     }
     
-    func toNormalState(){
+    func toNormalState() {
         self.buttonState = .normal
     }
     
-    private func setATimer(){
-        if -lastTimeSendCode.timeIntervalSinceNow < sendInterval{
+    private func setATimer() {
+        if -lastSending.timeIntervalSinceNow < sendInterval {
+            
             self.buttonState = .waiting
-            let timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(VerificationCodeButton.respondsToTimer(_:)), userInfo: nil, repeats: true)
+            let timer = Timer.scheduledTimer(timeInterval: 1,
+                                             target: self,
+                                             selector: #selector(VerificationCodeButton.respondsToTimer(_:)),
+                                             userInfo: nil,
+                                             repeats: true)
+            
             timer.fireDate = NSDate.distantPast
         }
     }
     
-    func respondsToTimer(_ timer: Timer){
-        let timeInterval = lastTimeSendCode.timeIntervalSinceNow + sendInterval
-        if timeInterval > 0{
+    func respondsToTimer(_ timer: Timer) {
+        let timeInterval = lastSending.timeIntervalSinceNow + sendInterval
+        if timeInterval > 0 {
             setAttributedTitleString(string: "\(Int(round(timeInterval)))秒", forState: .normal)
-        }else{
+        } else {
             timer.invalidate()
             toNormalState()
         }
