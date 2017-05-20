@@ -1,18 +1,21 @@
 
 import UIKit
 
-protocol VerificationCodeButtonStyle {
+public protocol VerificationCodeButtonStyle {
     func normalState(_ button: VerificationCodeButton)
     func waitingState(_ button: VerificationCodeButton)
     func sendingState(_ button: VerificationCodeButton)
 }
 
 
-struct LoginVerificationCodeButtonStyle: VerificationCodeButtonStyle {
+public struct LoginVerificationCodeButtonStyle: VerificationCodeButtonStyle {
+    
+    public init () {}
+    
     private let disenabledColor = UIColor.lightGray.withAlphaComponent(0.5)
     private let enabledColor = UIColor.white
     
-    func normalState(_ button: VerificationCodeButton) {
+    public func normalState(_ button: VerificationCodeButton) {
         let attString = NSMutableAttributedString(string: "获取",
                                                   attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 15),
                                                                NSForegroundColorAttributeName: UIColor.black])
@@ -21,7 +24,7 @@ struct LoginVerificationCodeButtonStyle: VerificationCodeButtonStyle {
         button.setAttributedTitle(attString, for: .normal)
     }
     
-    func waitingState(_ button: VerificationCodeButton) {
+    public func waitingState(_ button: VerificationCodeButton) {
         let attString = NSMutableAttributedString(string: "..",
                                                   attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 15) ,
                                                                NSForegroundColorAttributeName : UIColor.black])
@@ -30,7 +33,7 @@ struct LoginVerificationCodeButtonStyle: VerificationCodeButtonStyle {
         button.backgroundColor = disenabledColor
     }
     
-    func sendingState(_ button: VerificationCodeButton) {
+    public func sendingState(_ button: VerificationCodeButton) {
         if let currentAttributedTitle = button.currentAttributedTitle {
             let attString = NSMutableAttributedString(attributedString: currentAttributedTitle)
             attString.addAttribute(NSForegroundColorAttributeName,

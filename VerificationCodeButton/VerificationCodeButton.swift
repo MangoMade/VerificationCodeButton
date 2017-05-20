@@ -3,7 +3,7 @@
 import UIKit
 
 
-class VerificationCodeButton: UIButton {
+open class VerificationCodeButton: UIButton {
     
     private enum State {
         case sending
@@ -16,7 +16,7 @@ class VerificationCodeButton: UIButton {
     }
     
     // MARK: properties
-    var didTouchUpInside : (() -> Void)?
+    public var didTouchUpInside : (() -> Void)?
     
     private let when : String
     
@@ -64,7 +64,7 @@ class VerificationCodeButton: UIButton {
     
     // MARK: init
     // design init
-    init(when: String,
+    public init(when: String,
          style: VerificationCodeButtonStyle)
     {
         self.when = when
@@ -81,8 +81,10 @@ class VerificationCodeButton: UIButton {
         self.layer.cornerRadius = Screen.scale * 2
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    public required init?(coder aDecoder: NSCoder) {
+        self.when = "123"
+        self.style = LoginVerificationCodeButtonStyle()
+        super.init(coder: aDecoder)
     }
     
     func respondsToTap() {
@@ -92,7 +94,7 @@ class VerificationCodeButton: UIButton {
         }
     }
     
-    func countDown(sendInterval: TimeInterval = 60) {
+    public func countDown(sendInterval: TimeInterval = 60) {
         lastSending = NSDate()
         self.sendInterval = sendInterval
         setATimer()

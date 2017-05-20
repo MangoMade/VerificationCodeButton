@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  VerificationCodeButton
+//  Example
 //
-//  Created by Aqua on 2017/4/13.
+//  Created by Aqua on 2017/5/19.
 //  Copyright © 2017年 Aqua. All rights reserved.
 //
 
@@ -15,11 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        window = UIWindow(frame: UIScreen.main.bounds)
-        let navi = UINavigationController(rootViewController: ViewController())
-        window?.rootViewController = navi
-        window?.makeKeyAndVisible()
-        
+        // Override point for customization after application launch.
         return true
     }
 

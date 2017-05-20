@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VerificationCodeButton
 
 class ButtonViewController: UIViewController {
 
@@ -35,5 +36,5 @@ class ButtonViewController: UIViewController {
             self.button.countDown()
         }
     }
-
 }
+

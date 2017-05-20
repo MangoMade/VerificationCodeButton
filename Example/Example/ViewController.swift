@@ -1,8 +1,8 @@
 //
 //  ViewController.swift
-//  VerificationCodeButton
+//  Example
 //
-//  Created by Aqua on 2017/4/13.
+//  Created by Aqua on 2017/5/19.
 //  Copyright © 2017年 Aqua. All rights reserved.
 //
 
@@ -25,7 +25,5 @@ class ViewController: UIViewController {
     func respondsToButton(sender: UIButton) {
         navigationController?.pushViewController(ButtonViewController(), animated: true)
     }
-
-
 }
 
