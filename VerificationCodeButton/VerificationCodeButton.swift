@@ -2,8 +2,7 @@
 
 import UIKit
 
-
-open class VerificationCodeButton: UIButton {
+@IBDesignable open class VerificationCodeButton: UIButton {
     
     private enum State {
         case sending
@@ -18,11 +17,11 @@ open class VerificationCodeButton: UIButton {
     // MARK: properties
     public var didTouchUpInside : (() -> Void)?
     
-    private let when : String
+    @IBInspectable private(set) var when: String
+    
+    @IBInspectable var sendInterval: TimeInterval = 60
     
     private let style: VerificationCodeButtonStyle
-    
-    private var sendInterval : TimeInterval = 60
     
     private var buttonState = State.normal {
         didSet{
@@ -37,23 +36,22 @@ open class VerificationCodeButton: UIButton {
         }
     }
     
-    private var lastSending = NSDate() {
-        didSet{
-            UserDefaults.standard.setValue(NSDate(), forKey: when)
-        }
-    }
-    
-    private var localLastSending: NSDate? {
+    /*
+
+    */
+    private var localLastSending: Date {
         get {
-            guard let dic = UserDefaults.standard.value(forKey: Const.userDefaultsKey) as? [String: NSDate] else {
-                return nil
+            if let dic = UserDefaults.standard.value(forKey: Const.userDefaultsKey) as? [String: Date] {
+                if let date = dic[when] {
+                    return date
+                }
             }
-            return dic[when]
+            return Date.distantPast
         }
         set {
-            var dic = UserDefaults.standard.value(forKey: Const.userDefaultsKey) as? [String: NSDate]
+            var dic = UserDefaults.standard.value(forKey: Const.userDefaultsKey) as? [String: Date]
             if dic == nil {
-                dic = [String: NSDate]()
+                dic = [String: Date]()
             }
             dic![when] = newValue
             UserDefaults.standard.setValue(dic!, forKey: Const.userDefaultsKey)
@@ -62,8 +60,14 @@ open class VerificationCodeButton: UIButton {
     
     private var timer : Timer?
     
-    // MARK: init
-    // design init
+    // MARK: - Class Method
+    
+    open class func styleForStoryboard() -> VerificationCodeButtonStyle {
+        return LoginVerificationCodeButtonStyle()
+    }
+    
+    // MARK: - Initialization
+
     public init(when: String,
          style: VerificationCodeButtonStyle)
     {
@@ -74,17 +78,49 @@ open class VerificationCodeButton: UIButton {
         
         self.addTarget(self, action: #selector(respondsToTap), for: .touchUpInside)
         style.normalState(self)
-        if let lastTime = UserDefaults.standard.value(forKey: self.when) as? NSDate {
-            self.lastSending = lastTime
-            setATimer()
-        }
-        self.layer.cornerRadius = Screen.scale * 2
+        setATimer()
     }
     
     public required init?(coder aDecoder: NSCoder) {
-        self.when = "123"
-        self.style = LoginVerificationCodeButtonStyle()
+        self.when = "default"
+        self.style = type(of: self).styleForStoryboard()
+        
         super.init(coder: aDecoder)
+        
+        self.addTarget(self, action: #selector(respondsToTap), for: .touchUpInside)
+        style.normalState(self)
+        setATimer()
+    }
+    
+    public func countDown(sendInterval: TimeInterval = 60) {
+        localLastSending = Date()
+        self.sendInterval = sendInterval
+        setATimer()
+    }
+    
+    public func toNormalState() {
+        self.buttonState = .normal
+    }
+    
+    private func setATimer() {
+        if -localLastSending.timeIntervalSinceNow < sendInterval {
+            
+            self.buttonState = .waiting
+            let timer = Timer.scheduledTimer(timeInterval: 1,
+                                             target: self,
+                                             selector: #selector(VerificationCodeButton.respondsToTimer(_:)),
+                                             userInfo: nil,
+                                             repeats: true)
+            
+            timer.fireDate = Date.distantPast
+        }
+    }
+    
+    private func setAttributedTitleString(string: String , forState state : UIControlState) {
+        guard let oldAttStr = attributedTitle(for: state) else { return }
+        let attStr = NSMutableAttributedString(attributedString: oldAttStr)
+        attStr.mutableString.setString(string)
+        setAttributedTitle(attStr, for: state)
     }
     
     func respondsToTap() {
@@ -94,44 +130,13 @@ open class VerificationCodeButton: UIButton {
         }
     }
     
-    public func countDown(sendInterval: TimeInterval = 60) {
-        lastSending = NSDate()
-        self.sendInterval = sendInterval
-        setATimer()
-    }
-    
-    func toNormalState() {
-        self.buttonState = .normal
-    }
-    
-    private func setATimer() {
-        if -lastSending.timeIntervalSinceNow < sendInterval {
-            
-            self.buttonState = .waiting
-            let timer = Timer.scheduledTimer(timeInterval: 1,
-                                             target: self,
-                                             selector: #selector(VerificationCodeButton.respondsToTimer(_:)),
-                                             userInfo: nil,
-                                             repeats: true)
-            
-            timer.fireDate = NSDate.distantPast
-        }
-    }
-    
     func respondsToTimer(_ timer: Timer) {
-        let timeInterval = lastSending.timeIntervalSinceNow + sendInterval
+        let timeInterval = localLastSending.timeIntervalSinceNow + sendInterval
         if timeInterval > 0 {
             setAttributedTitleString(string: "\(Int(round(timeInterval)))秒", forState: .normal)
         } else {
             timer.invalidate()
             toNormalState()
         }
-    }
-    
-    func setAttributedTitleString(string: String , forState state : UIControlState) {
-        guard let oldAttStr = attributedTitle(for: state) else { return }
-        let attStr = NSMutableAttributedString(attributedString: oldAttStr)
-        attStr.mutableString.setString(string)
-        setAttributedTitle(attStr, for: state)
     }
 }

@@ -18,23 +18,69 @@ class ButtonViewController: UIViewController {
         view.backgroundColor = UIColor.white
         button.center = view.center
         button.bounds = CGRect(x: 0, y: 0, width: 100, height: 50)
-        button.setTitle("next page", for: .normal)
-        
-        
         button.didTouchUpInside = { [weak self] in
             guard let `self` = self else {
                 return
             }
-            self.perform(#selector(ButtonViewController.countDown), with: 0, afterDelay: 3)
+            self.perform(#selector(ButtonViewController.countDown), with: self.button, afterDelay: 3)
         }
         
         view.addSubview(button)
     }
 
-    func countDown() {
+    func countDown(sender: VerificationCodeButton) {
         DispatchQueue.main.async {
-            self.button.countDown()
+            sender.countDown()
+        }
+    }
+
+    @IBAction func buttonTaped(_ sender: Any) {
+        if let sender = sender as? VerificationCodeButton {
+            perform(#selector(ButtonViewController.countDown), with: sender, afterDelay: 3)
         }
     }
 }
 
+class TestButton: VerificationCodeButton {
+    override class func styleForStoryboard() -> VerificationCodeButtonStyle {
+        return LoginVerificationCodeButtonStyle1()
+    }
+}
+
+public struct LoginVerificationCodeButtonStyle1: VerificationCodeButtonStyle {
+    
+    public init () {}
+    
+    private let disenabledColor = UIColor.lightGray.withAlphaComponent(0.5)
+    private let enabledColor = UIColor.white
+    
+    public func normalState(_ button: VerificationCodeButton) {
+        let attString = NSMutableAttributedString(string: "获取验证码1",
+                                                  attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 15),
+                                                               NSForegroundColorAttributeName: UIColor.black])
+        
+        button.backgroundColor = enabledColor
+        button.setAttributedTitle(attString, for: .normal)
+    }
+    
+    public func waitingState(_ button: VerificationCodeButton) {
+        if let currentAttributedTitle = button.currentAttributedTitle {
+            let attString = NSMutableAttributedString(attributedString: currentAttributedTitle)
+            attString.addAttribute(NSForegroundColorAttributeName,
+                                   value: UIColor.gray,
+                                   range: NSRange(location: 0, length: attString.length))
+            
+            button.setAttributedTitle(attString, for: .normal)
+            button.backgroundColor = disenabledColor
+        }
+    }
+    
+    public func sendingState(_ button: VerificationCodeButton) {
+        let attString = NSMutableAttributedString(string: "发送中..",
+                                                  attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 15) ,
+                                                               NSForegroundColorAttributeName : UIColor.black])
+        
+        button.setAttributedTitle(attString, for: .normal)
+        button.backgroundColor = disenabledColor
+    }
+}

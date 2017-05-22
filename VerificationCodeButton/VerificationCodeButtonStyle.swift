@@ -16,7 +16,7 @@ public struct LoginVerificationCodeButtonStyle: VerificationCodeButtonStyle {
     private let enabledColor = UIColor.white
     
     public func normalState(_ button: VerificationCodeButton) {
-        let attString = NSMutableAttributedString(string: "获取",
+        let attString = NSMutableAttributedString(string: "获取验证码",
                                                   attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 15),
                                                                NSForegroundColorAttributeName: UIColor.black])
         
@@ -25,15 +25,6 @@ public struct LoginVerificationCodeButtonStyle: VerificationCodeButtonStyle {
     }
     
     public func waitingState(_ button: VerificationCodeButton) {
-        let attString = NSMutableAttributedString(string: "..",
-                                                  attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 15) ,
-                                                               NSForegroundColorAttributeName : UIColor.black])
-        
-        button.setAttributedTitle(attString, for: .normal)
-        button.backgroundColor = disenabledColor
-    }
-    
-    public func sendingState(_ button: VerificationCodeButton) {
         if let currentAttributedTitle = button.currentAttributedTitle {
             let attString = NSMutableAttributedString(attributedString: currentAttributedTitle)
             attString.addAttribute(NSForegroundColorAttributeName,
@@ -43,6 +34,15 @@ public struct LoginVerificationCodeButtonStyle: VerificationCodeButtonStyle {
             button.setAttributedTitle(attString, for: .normal)
             button.backgroundColor = disenabledColor
         }
+    }
+    
+    public func sendingState(_ button: VerificationCodeButton) {
+        let attString = NSMutableAttributedString(string: "发送中..",
+                                                  attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 15) ,
+                                                               NSForegroundColorAttributeName : UIColor.black])
+        
+        button.setAttributedTitle(attString, for: .normal)
+        button.backgroundColor = disenabledColor
     }
 }
 

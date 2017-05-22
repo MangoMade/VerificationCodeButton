@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    /*
     let button = UIButton(type: .system)
     
     override func viewDidLoad() {
@@ -25,5 +26,6 @@ class ViewController: UIViewController {
     func respondsToButton(sender: UIButton) {
         navigationController?.pushViewController(ButtonViewController(), animated: true)
     }
+     */
 }
 
