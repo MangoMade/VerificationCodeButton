@@ -19,7 +19,7 @@ import UIKit
     
     @IBInspectable private(set) var when: String
     
-    @IBInspectable var sendInterval: TimeInterval = 60
+    @IBInspectable var sendInterval: TimeInterval = 60 // FIXME: 这个可能需要缓存一下
     
     private let style: VerificationCodeButtonStyle
     
@@ -58,7 +58,8 @@ import UIKit
         }
     }
     
-    private var timer : Timer?
+//    private var timer : Timer?
+    // FIXME: 这个timer还没用上
     
     // MARK: - Class Method
     
@@ -69,7 +70,7 @@ import UIKit
     // MARK: - Initialization
 
     public init(when: String,
-         style: VerificationCodeButtonStyle)
+                style: VerificationCodeButtonStyle)
     {
         self.when = when
         self.style = style
@@ -90,11 +91,11 @@ import UIKit
         self.addTarget(self, action: #selector(respondsToTap), for: .touchUpInside)
         style.normalState(self)
         setATimer()
+        // FIXME: 在storyboard里设置when无效
     }
     
-    public func countDown(sendInterval: TimeInterval = 60) {
+    public func countDown() {
         localLastSending = Date()
-        self.sendInterval = sendInterval
         setATimer()
     }
     
