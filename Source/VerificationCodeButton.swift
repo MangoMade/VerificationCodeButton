@@ -14,12 +14,12 @@ import UIKit
         static let userDefaultsKey = "Verification-Code-Button-Dic"
     }
     
-    // MARK: properties
+    // MARK: Properties
     public var didTouchUpInside : (() -> Void)?
     
-    @IBInspectable private(set) var when: String
+    @IBInspectable open private(set) var when: String
     
-    @IBInspectable var sendInterval: TimeInterval = 60 // FIXME: 这个可能需要缓存一下
+    @IBInspectable open var sendInterval: Double = 10 // FIXME: 这个可能需要缓存一下
     
     private let style: VerificationCodeButtonStyle
     
@@ -35,10 +35,7 @@ import UIKit
             }
         }
     }
-    
-    /*
 
-    */
     private var localLastSending: Date {
         get {
             if let dic = UserDefaults.standard.value(forKey: Const.userDefaultsKey) as? [String: Date] {
@@ -58,8 +55,7 @@ import UIKit
         }
     }
     
-//    private var timer : Timer?
-    // FIXME: 这个timer还没用上
+    private var timer : Timer?
     
     // MARK: - Class Method
     
@@ -68,7 +64,7 @@ import UIKit
     }
     
     // MARK: - Initialization
-
+    
     public init(when: String,
                 style: VerificationCodeButtonStyle)
     {
@@ -77,9 +73,7 @@ import UIKit
         
         super.init(frame: .zero)
         
-        self.addTarget(self, action: #selector(respondsToTap), for: .touchUpInside)
-        style.normalState(self)
-        setATimer()
+        commonInit()
     }
     
     public required init?(coder aDecoder: NSCoder) {
@@ -88,11 +82,27 @@ import UIKit
         
         super.init(coder: aDecoder)
         
-        self.addTarget(self, action: #selector(respondsToTap), for: .touchUpInside)
-        style.normalState(self)
-        setATimer()
-        // FIXME: 在storyboard里设置when无效
+        commonInit()
     }
+    
+    private func commonInit() {
+        addTarget(self, action: #selector(respondsToTap), for: .touchUpInside)
+        style.normalState(self)
+    }
+    
+    // MARK: - Override
+    
+    open override func willMove(toWindow newWindow: UIWindow?) {
+        super.willMove(toWindow: newWindow)
+        if newWindow?.isKeyWindow == true {
+            setATimer()
+        } else {
+            timer?.invalidate()
+            timer = nil
+        }
+    }
+
+    // MARK: - Public methods
     
     public func countDown() {
         localLastSending = Date()
@@ -103,17 +113,19 @@ import UIKit
         self.buttonState = .normal
     }
     
+    // MARK: - Private methods
+    
     private func setATimer() {
         if -localLastSending.timeIntervalSinceNow < sendInterval {
             
             self.buttonState = .waiting
-            let timer = Timer.scheduledTimer(timeInterval: 1,
-                                             target: self,
-                                             selector: #selector(VerificationCodeButton.respondsToTimer(_:)),
-                                             userInfo: nil,
-                                             repeats: true)
+            timer = Timer.scheduledTimer(timeInterval: 1,
+                                         target: self,
+                                         selector: #selector(VerificationCodeButton.respondsToTimer(_:)),
+                                         userInfo: nil,
+                                         repeats: true)
             
-            timer.fireDate = Date.distantPast
+            timer?.fireDate = Date.distantPast
         }
     }
     
@@ -123,6 +135,8 @@ import UIKit
         attStr.mutableString.setString(string)
         setAttributedTitle(attStr, for: state)
     }
+    
+    // MARK: - Action / Callback
     
     func respondsToTap() {
         if self.buttonState == .normal {
