@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
 
 
   s.name         = "VerificationCodeButton"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "iOS app SMS code verification button"
 
   s.description  = <<-DESC
