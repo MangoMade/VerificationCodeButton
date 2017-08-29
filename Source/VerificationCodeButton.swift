@@ -21,6 +21,7 @@ import UIKit
     
     @IBInspectable open var sendInterval: Double = 60 
     
+    // TODO: 增加类似UIButton的 按状态设置属性的方法
     private let style: VerificationCodeButtonStyle
     
     private var buttonState = State.normal {
