@@ -19,7 +19,7 @@ import UIKit
     
     @IBInspectable open private(set) var when: String
     
-    @IBInspectable open var sendInterval: Double = 10 // FIXME: 这个可能需要缓存一下
+    @IBInspectable open var sendInterval: Double = 60 // FIXME: 需要缓存
     
     private let style: VerificationCodeButtonStyle
     
