@@ -19,7 +19,7 @@ import UIKit
     
     @IBInspectable open private(set) var when: String
     
-    @IBInspectable open var sendInterval: Double = 60 // FIXME: 需要缓存
+    @IBInspectable open var sendInterval: Double = 60 
     
     private let style: VerificationCodeButtonStyle
     
@@ -36,7 +36,7 @@ import UIKit
         }
     }
 
-    private var localLastSending: Date {
+    private var nextEnableTime: Date {
         get {
             if let dic = UserDefaults.standard.value(forKey: Const.userDefaultsKey) as? [String: Date] {
                 if let date = dic[when] {
@@ -105,7 +105,7 @@ import UIKit
     // MARK: - Public methods
     
     public func countDown() {
-        localLastSending = Date()
+        nextEnableTime = Date(timeIntervalSinceNow: sendInterval)
         setATimer()
     }
     
@@ -116,7 +116,8 @@ import UIKit
     // MARK: - Private methods
     
     private func setATimer() {
-        if -localLastSending.timeIntervalSinceNow < sendInterval {
+
+        if nextEnableTime.timeIntervalSinceNow > 0 {
             
             self.buttonState = .waiting
             timer = Timer.scheduledTimer(timeInterval: 1,
@@ -146,7 +147,7 @@ import UIKit
     }
     
     func respondsToTimer(_ timer: Timer) {
-        let timeInterval = localLastSending.timeIntervalSinceNow + sendInterval
+        let timeInterval = nextEnableTime.timeIntervalSinceNow
         if timeInterval > 0 {
             setAttributedTitleString(string: "\(Int(round(timeInterval)))秒", forState: .normal)
         } else {

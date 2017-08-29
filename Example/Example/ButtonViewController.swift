@@ -15,11 +15,12 @@ class ButtonViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+  
         view.backgroundColor = UIColor.white
         button.center = view.center
         
         button.bounds = CGRect(x: 0, y: 0, width: 100, height: 50)
-        button.sendInterval = 20
+      
         button.didTouchUpInside = { [weak self] in
             guard let `self` = self else {
                 return
