@@ -15,6 +15,9 @@ import UIKit
     }
     
     // MARK: Properties
+    
+    public var titleLabel = UILabel()
+    
     public var didTouchUpInside : (() -> Void)?
     
     @IBInspectable open private(set) var when: String
@@ -24,6 +27,9 @@ import UIKit
     
     
     // TODO: 增加类似UIButton的 按状态设置属性的方法
+    
+    private lazy var backgroundImageView = UIImageView()
+    
     private let style: VerificationCodeButtonStyle
     
     private var buttonState = VerificationCodeState.normal {
@@ -89,7 +95,25 @@ import UIKit
     }
     
     private func commonInit() {
+        // TODO: add action
 //        addTarget(self, action: #selector(respondsToTap), for: .touchUpInside)
+        addSubview(titleLabel)
+        NSLayoutConstraint(item: titleLabel,
+                           attribute: .centerX,
+                           relatedBy: .equal,
+                           toItem: self,
+                           attribute: .centerX,
+                           multiplier: 1,
+                           constant: 0).isActive = true
+        
+        NSLayoutConstraint(item: titleLabel,
+                           attribute: .centerY,
+                           relatedBy: .equal,
+                           toItem: self,
+                           attribute: .centerY,
+                           multiplier: 1,
+                           constant: 0).isActive = true
+        
         style.normalState(self)
     }
     
@@ -105,6 +129,10 @@ import UIKit
         }
     }
 
+    open override var intrinsicContentSize: CGSize {
+        return titleLabel.intrinsicContentSize
+    }
+    
     // MARK: - Public methods
     
     public func countDown() {
@@ -116,11 +144,45 @@ import UIKit
         self.buttonState = .normal
     }
     
-    public func setTitleColor(_ color: UIColor?, for state: VerificationCodeState) {
+    open func setTitle(_ title: String?, for state: VerificationCodeState) {
         
     }
     
+    open func setTitleColor(_ color: UIColor?, for state: VerificationCodeState) {
+        
+    }
+ 
+    open func setBackgroundColor(_ color: UIColor?, for state: VerificationCodeState) {
+        
+    }
     
+    open func setBackgroundImage(_ image: UIImage?, for state: VerificationCodeState) {
+        
+    }
+    
+    open func setAttributedTitle(_ title: NSAttributedString?, for state: VerificationCodeState) {
+        
+    }
+    
+    open func title(for state: VerificationCodeState) -> String? {
+        return nil
+    }
+    
+    open func titleColor(for state: VerificationCodeState) -> UIColor? {
+        return nil
+    }
+
+    open func backgroundColor(for state: VerificationCodeState) -> UIColor? {
+        return nil
+    }
+    
+    open func backgroundImage(for state: VerificationCodeState) -> UIImage? {
+        return nil
+    }
+    
+    open func attributedTitle(for state: VerificationCodeState) -> NSAttributedString? {
+        return nil
+    }
     
     // MARK: - Private methods
     
@@ -139,7 +201,7 @@ import UIKit
         }
     }
     
-    private func setAttributedTitleString(string: String , forState state : UIControlState) {
+    private func setAttributedTitleString(string: String , forState state : VerificationCodeState) {
         /*
         guard let oldAttStr = attributedTitle(for: state) else { return }
         let attStr = NSMutableAttributedString(attributedString: oldAttStr)
