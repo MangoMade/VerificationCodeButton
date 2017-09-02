@@ -21,10 +21,11 @@ public struct LoginVerificationCodeButtonStyle: VerificationCodeButtonStyle {
                                                                NSForegroundColorAttributeName: UIColor.black])
         
         button.backgroundColor = enabledColor
-        button.setAttributedTitle(attString, for: .normal)
+//        button.setAttributedTitle(attString, for: .normal)
     }
     
     public func waitingState(_ button: VerificationCodeButton) {
+        /*
         if let currentAttributedTitle = button.currentAttributedTitle {
             let attString = NSMutableAttributedString(attributedString: currentAttributedTitle)
             attString.addAttribute(NSForegroundColorAttributeName,
@@ -34,6 +35,7 @@ public struct LoginVerificationCodeButtonStyle: VerificationCodeButtonStyle {
             button.setAttributedTitle(attString, for: .normal)
             button.backgroundColor = disenabledColor
         }
+         */
     }
     
     public func sendingState(_ button: VerificationCodeButton) {
@@ -41,7 +43,7 @@ public struct LoginVerificationCodeButtonStyle: VerificationCodeButtonStyle {
                                                   attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 15) ,
                                                                NSForegroundColorAttributeName : UIColor.black])
         
-        button.setAttributedTitle(attString, for: .normal)
+//        button.setAttributedTitle(attString, for: .normal)
         button.backgroundColor = disenabledColor
     }
 }

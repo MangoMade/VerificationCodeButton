@@ -2,9 +2,9 @@
 
 import UIKit
 
-@IBDesignable open class VerificationCodeButton: UIButton {
+@IBDesignable open class VerificationCodeButton: UIView {
     
-    private enum State {
+    public enum VerificationCodeState {
         case sending
         case waiting
         case normal
@@ -20,11 +20,13 @@ import UIKit
     @IBInspectable open private(set) var when: String
     
     @IBInspectable open var sendInterval: Double = 60 
+
+    
     
     // TODO: 增加类似UIButton的 按状态设置属性的方法
     private let style: VerificationCodeButtonStyle
     
-    private var buttonState = State.normal {
+    private var buttonState = VerificationCodeState.normal {
         didSet{
             switch buttonState {
             case .normal:
@@ -87,7 +89,7 @@ import UIKit
     }
     
     private func commonInit() {
-        addTarget(self, action: #selector(respondsToTap), for: .touchUpInside)
+//        addTarget(self, action: #selector(respondsToTap), for: .touchUpInside)
         style.normalState(self)
     }
     
@@ -114,6 +116,12 @@ import UIKit
         self.buttonState = .normal
     }
     
+    public func setTitleColor(_ color: UIColor?, for state: VerificationCodeState) {
+        
+    }
+    
+    
+    
     // MARK: - Private methods
     
     private func setATimer() {
@@ -132,10 +140,12 @@ import UIKit
     }
     
     private func setAttributedTitleString(string: String , forState state : UIControlState) {
+        /*
         guard let oldAttStr = attributedTitle(for: state) else { return }
         let attStr = NSMutableAttributedString(attributedString: oldAttStr)
         attStr.mutableString.setString(string)
         setAttributedTitle(attStr, for: state)
+         */
     }
     
     // MARK: - Action / Callback
