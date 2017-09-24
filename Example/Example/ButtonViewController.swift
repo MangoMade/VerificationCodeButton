@@ -30,7 +30,7 @@ class ButtonViewController: UIViewController {
         view.addSubview(button)
     }
 
-    func countDown(sender: VerificationCodeButton) {
+    @objc func countDown(sender: VerificationCodeButton) {
         DispatchQueue.main.async {
             sender.countDown()
         }
@@ -58,14 +58,15 @@ public struct LoginVerificationCodeButtonStyle1: VerificationCodeButtonStyle {
     
     public func normalState(_ button: VerificationCodeButton) {
         let attString = NSMutableAttributedString(string: "获取验证码1",
-                                                  attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 15),
-                                                               NSForegroundColorAttributeName: UIColor.black])
+                                                  attributes: [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15),
+                                                               NSAttributedStringKey.foregroundColor: UIColor.black])
         
         button.backgroundColor = enabledColor
         button.setAttributedTitle(attString, for: .normal)
     }
     
     public func waitingState(_ button: VerificationCodeButton) {
+        /*
         if let currentAttributedTitle = button.currentAttributedTitle {
             let attString = NSMutableAttributedString(attributedString: currentAttributedTitle)
             attString.addAttribute(NSForegroundColorAttributeName,
@@ -75,12 +76,13 @@ public struct LoginVerificationCodeButtonStyle1: VerificationCodeButtonStyle {
             button.setAttributedTitle(attString, for: .normal)
             button.backgroundColor = disenabledColor
         }
+         */
     }
     
     public func sendingState(_ button: VerificationCodeButton) {
         let attString = NSMutableAttributedString(string: "发送中..",
-                                                  attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 15) ,
-                                                               NSForegroundColorAttributeName : UIColor.black])
+                                                  attributes: [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15) ,
+                                                               NSAttributedStringKey.foregroundColor : UIColor.black])
         
         button.setAttributedTitle(attString, for: .normal)
         button.backgroundColor = disenabledColor

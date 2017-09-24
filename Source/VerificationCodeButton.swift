@@ -8,6 +8,7 @@ import UIKit
         case sending
         case waiting
         case normal
+        // TODO: add highlight state
     }
     
     private struct Const {
@@ -219,7 +220,7 @@ import UIKit
         }
     }
     
-    func respondsToTimer(_ timer: Timer) {
+    @objc func respondsToTimer(_ timer: Timer) {
         let timeInterval = nextEnableTime.timeIntervalSinceNow
         if timeInterval > 0 {
             setAttributedTitleString(string: "\(Int(round(timeInterval)))秒", forState: .normal)
