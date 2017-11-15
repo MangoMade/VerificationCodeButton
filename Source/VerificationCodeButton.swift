@@ -2,14 +2,16 @@
 
 import UIKit
 
+
+public enum VerificationCodeState {
+    case sending
+    case countingDown
+    case normal
+    case resend
+    // TODO: add highlight state
+}
+
 @IBDesignable open class VerificationCodeButton: UIView {
-    
-    public enum VerificationCodeState {
-        case sending
-        case waiting
-        case normal
-        // TODO: add highlight state
-    }
     
     private struct Const {
         static let userDefaultsKey = "Verification-Code-Button-Dic"
@@ -33,15 +35,17 @@ import UIKit
     
     private let style: VerificationCodeButtonStyle
     
-    private var buttonState = VerificationCodeState.normal {
+    private var state = VerificationCodeState.normal {
         didSet{
-            switch buttonState {
+            switch state {
             case .normal:
                 style.normalState(self)
-            case .waiting:
+            case .countingDown:
                 style.waitingState(self)
             case .sending:
                 style.sendingState(self)
+            case .resend:
+                break
             }
         }
     }
@@ -61,11 +65,15 @@ import UIKit
                 dic = [String: Date]()
             }
             dic![when] = newValue
+            
             UserDefaults.standard.setValue(dic!, forKey: Const.userDefaultsKey)
         }
     }
     
     private var timer : Timer?
+    
+    private weak var target: AnyObject?
+    private var selector: Selector?
     
     // MARK: - Class Method
     
@@ -82,7 +90,7 @@ import UIKit
         self.style = style
         
         super.init(frame: .zero)
-        
+    
         commonInit()
     }
     
@@ -97,7 +105,9 @@ import UIKit
     
     private func commonInit() {
         // TODO: add action
-//        addTarget(self, action: #selector(respondsToTap), for: .touchUpInside)
+
+        let tapGestrue = UITapGestureRecognizer(target: self, action: #selector(respondsToTap(_:)))
+        addGestureRecognizer(tapGestrue)
         addSubview(titleLabel)
         NSLayoutConstraint(item: titleLabel,
                            attribute: .centerX,
@@ -136,13 +146,18 @@ import UIKit
     
     // MARK: - Public methods
     
+    public func set(target: AnyObject?, selector: Selector?) {
+        self.target = target
+        self.selector = selector
+    }
+    
     public func countDown() {
         nextEnableTime = Date(timeIntervalSinceNow: sendInterval)
         setATimer()
     }
     
     public func toNormalState() {
-        self.buttonState = .normal
+        self.state = .normal
     }
     
     open func setTitle(_ title: String?, for state: VerificationCodeState) {
@@ -191,7 +206,7 @@ import UIKit
 
         if nextEnableTime.timeIntervalSinceNow > 0 {
             
-            self.buttonState = .waiting
+            self.state = .countingDown
             timer = Timer.scheduledTimer(timeInterval: 1,
                                          target: self,
                                          selector: #selector(VerificationCodeButton.respondsToTimer(_:)),
@@ -214,13 +229,24 @@ import UIKit
     // MARK: - Action / Callback
     
     func respondsToTap() {
-        if self.buttonState == .normal {
-            self.buttonState = .sending
-            didTouchUpInside?()
+        
+        if state == .normal {
+            state = .sending
+            if target?.responds(to: selector) == true {
+                let _ = target?.perform(selector)
+            }
         }
     }
+}
+
+// MARK: Action / Callback
+extension VerificationCodeButton {
     
-    @objc func respondsToTimer(_ timer: Timer) {
+    @objc fileprivate func respondsToTap(_ gesture: UITapGestureRecognizer) {
+        
+    }
+    
+    @objc fileprivate func respondsToTimer(_ timer: Timer) {
         let timeInterval = nextEnableTime.timeIntervalSinceNow
         if timeInterval > 0 {
             setAttributedTitleString(string: "\(Int(round(timeInterval)))秒", forState: .normal)

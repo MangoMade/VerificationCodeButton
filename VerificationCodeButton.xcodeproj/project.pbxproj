@@ -11,6 +11,7 @@
 		529B52961ECEED0700E0D5FB /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529B52931ECEED0700E0D5FB /* Screen.swift */; };
 		529B52971ECEED0700E0D5FB /* VerificationCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529B52941ECEED0700E0D5FB /* VerificationCodeButton.swift */; };
 		529B52981ECEED0700E0D5FB /* VerificationCodeButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529B52951ECEED0700E0D5FB /* VerificationCodeButtonStyle.swift */; };
+		529F7E501FBC2BF5000D15EC /* VerificationCodeControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529F7E4F1FBC2BF5000D15EC /* VerificationCodeControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		529B52931ECEED0700E0D5FB /* Screen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		529B52941ECEED0700E0D5FB /* VerificationCodeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerificationCodeButton.swift; sourceTree = "<group>"; };
 		529B52951ECEED0700E0D5FB /* VerificationCodeButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerificationCodeButtonStyle.swift; sourceTree = "<group>"; };
+		529F7E4F1FBC2BF5000D15EC /* VerificationCodeControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationCodeControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 				529B52931ECEED0700E0D5FB /* Screen.swift */,
 				529B52941ECEED0700E0D5FB /* VerificationCodeButton.swift */,
 				529B52951ECEED0700E0D5FB /* VerificationCodeButtonStyle.swift */,
+				529F7E4F1FBC2BF5000D15EC /* VerificationCodeControl.swift */,
 				529B526B1ECEEC3C00E0D5FB /* Info.plist */,
 			);
 			path = Source;
@@ -145,6 +148,7 @@
 				529B52961ECEED0700E0D5FB /* Screen.swift in Sources */,
 				529B52971ECEED0700E0D5FB /* VerificationCodeButton.swift in Sources */,
 				529B52981ECEED0700E0D5FB /* VerificationCodeButtonStyle.swift in Sources */,
+				529F7E501FBC2BF5000D15EC /* VerificationCodeControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

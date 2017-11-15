@@ -13,12 +13,15 @@ class ButtonViewController: UIViewController {
 
     let button = VerificationCodeButton(when: "login", style: LoginVerificationCodeButtonStyle())
     
+    let testButton = UIButton(type: .system)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
   
         view.backgroundColor = UIColor.white
         button.center = view.center
         button.bounds = CGRect(x: 0, y: 0, width: 100, height: 50)
+        button.backgroundColor = UIColor.gray
       
         button.didTouchUpInside = { [weak self] in
             guard let `self` = self else {
@@ -26,8 +29,15 @@ class ButtonViewController: UIViewController {
             }
             self.perform(#selector(ButtonViewController.countDown), with: self.button, afterDelay: 3)
         }
-        
+        button.set(target: self, selector: #selector(didTap))
         view.addSubview(button)
+        
+        testButton.frame = CGRect(x: 100, y: 100, width: 100, height: 100)
+//        testButton.setAttributedTitle(NSAttributedString.init(string: "123"), for: .highlighted)
+        testButton.setTitle("test", for: .normal)
+        
+        print(testButton.title(for: .highlighted))
+        view.addSubview(testButton)
     }
 
     @objc func countDown(sender: VerificationCodeButton) {
@@ -40,6 +50,10 @@ class ButtonViewController: UIViewController {
         if let sender = sender as? VerificationCodeButton {
             perform(#selector(ButtonViewController.countDown), with: sender, afterDelay: 3)
         }
+    }
+    
+    @objc func didTap() {
+        print(#function)
     }
 }
 
