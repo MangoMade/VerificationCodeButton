@@ -12,41 +12,24 @@ public enum VerificationCodeState {
 }
 
 @IBDesignable open class VerificationCodeButton: UIView {
+
     
     private struct Const {
         static let userDefaultsKey = "Verification-Code-Button-Dic"
     }
     
-    // MARK: Properties
-    
-    public var titleLabel = UILabel()
-    
-    public var didTouchUpInside : (() -> Void)?
-    
     @IBInspectable open private(set) var when: String
     
     @IBInspectable open var sendInterval: Double = 60 
 
-    
+    private var control: VerificationCodeControl!
     
     // TODO: 增加类似UIButton的 按状态设置属性的方法
     
     private lazy var backgroundImageView = UIImageView()
-    
-    private let style: VerificationCodeButtonStyle
-    
+   
     private var state = VerificationCodeState.normal {
         didSet{
-            switch state {
-            case .normal:
-                style.normalState(self)
-            case .countingDown:
-                style.waitingState(self)
-            case .sending:
-                style.sendingState(self)
-            case .resend:
-                break
-            }
         }
     }
 
@@ -77,17 +60,12 @@ public enum VerificationCodeState {
     
     // MARK: - Class Method
     
-    open class func styleForStoryboard() -> VerificationCodeButtonStyle {
-        return LoginVerificationCodeButtonStyle()
-    }
-    
+
     // MARK: - Initialization
     
-    public init(when: String,
-                style: VerificationCodeButtonStyle)
+    public init(when: String)
     {
         self.when = when
-        self.style = style
         
         super.init(frame: .zero)
     
@@ -96,7 +74,6 @@ public enum VerificationCodeState {
     
     public required init?(coder aDecoder: NSCoder) {
         self.when = "default"
-        self.style = type(of: self).styleForStoryboard()
         
         super.init(coder: aDecoder)
         
@@ -108,24 +85,7 @@ public enum VerificationCodeState {
 
         let tapGestrue = UITapGestureRecognizer(target: self, action: #selector(respondsToTap(_:)))
         addGestureRecognizer(tapGestrue)
-        addSubview(titleLabel)
-        NSLayoutConstraint(item: titleLabel,
-                           attribute: .centerX,
-                           relatedBy: .equal,
-                           toItem: self,
-                           attribute: .centerX,
-                           multiplier: 1,
-                           constant: 0).isActive = true
-        
-        NSLayoutConstraint(item: titleLabel,
-                           attribute: .centerY,
-                           relatedBy: .equal,
-                           toItem: self,
-                           attribute: .centerY,
-                           multiplier: 1,
-                           constant: 0).isActive = true
-        
-        style.normalState(self)
+
     }
     
     // MARK: - Override
@@ -141,7 +101,7 @@ public enum VerificationCodeState {
     }
 
     open override var intrinsicContentSize: CGSize {
-        return titleLabel.intrinsicContentSize
+        return control.intrinsicContentSize
     }
     
     // MARK: - Public methods

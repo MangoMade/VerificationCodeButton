@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		529B526C1ECEEC3C00E0D5FB /* VerificationCodeButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 529B526A1ECEEC3C00E0D5FB /* VerificationCodeButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		529B52961ECEED0700E0D5FB /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529B52931ECEED0700E0D5FB /* Screen.swift */; };
 		529B52971ECEED0700E0D5FB /* VerificationCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529B52941ECEED0700E0D5FB /* VerificationCodeButton.swift */; };
-		529B52981ECEED0700E0D5FB /* VerificationCodeButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529B52951ECEED0700E0D5FB /* VerificationCodeButtonStyle.swift */; };
 		529F7E501FBC2BF5000D15EC /* VerificationCodeControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529F7E4F1FBC2BF5000D15EC /* VerificationCodeControl.swift */; };
 /* End PBXBuildFile section */
 
@@ -18,9 +16,7 @@
 		529B52671ECEEC3C00E0D5FB /* VerificationCodeButton.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VerificationCodeButton.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		529B526A1ECEEC3C00E0D5FB /* VerificationCodeButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VerificationCodeButton.h; sourceTree = "<group>"; };
 		529B526B1ECEEC3C00E0D5FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		529B52931ECEED0700E0D5FB /* Screen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		529B52941ECEED0700E0D5FB /* VerificationCodeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerificationCodeButton.swift; sourceTree = "<group>"; };
-		529B52951ECEED0700E0D5FB /* VerificationCodeButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerificationCodeButtonStyle.swift; sourceTree = "<group>"; };
 		529F7E4F1FBC2BF5000D15EC /* VerificationCodeControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationCodeControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -55,9 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				529B526A1ECEEC3C00E0D5FB /* VerificationCodeButton.h */,
-				529B52931ECEED0700E0D5FB /* Screen.swift */,
 				529B52941ECEED0700E0D5FB /* VerificationCodeButton.swift */,
-				529B52951ECEED0700E0D5FB /* VerificationCodeButtonStyle.swift */,
 				529F7E4F1FBC2BF5000D15EC /* VerificationCodeControl.swift */,
 				529B526B1ECEEC3C00E0D5FB /* Info.plist */,
 			);
@@ -145,9 +139,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				529B52961ECEED0700E0D5FB /* Screen.swift in Sources */,
 				529B52971ECEED0700E0D5FB /* VerificationCodeButton.swift in Sources */,
-				529B52981ECEED0700E0D5FB /* VerificationCodeButtonStyle.swift in Sources */,
 				529F7E501FBC2BF5000D15EC /* VerificationCodeControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
