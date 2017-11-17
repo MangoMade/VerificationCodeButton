@@ -9,7 +9,16 @@
 import UIKit
 
 
-class VerificationCodeControl: UIControl {
+public enum VerificationCodeState {
+    case normal
+    case highlighted
+    case sending
+    case countingDown
+    case resend
+    // TODO: add highlight state
+}
+
+open class VerificationCodeControl: UIView {
 
     private struct Const {
         static let userDefaultsKey = "Verification-Code-Button-Dic"
@@ -34,11 +43,17 @@ class VerificationCodeControl: UIControl {
     
     // TODO: 增加类似UIButton的 按状态设置属性的方法
 
-    private var status = VerificationCodeState.normal {
+    open private(set) var status = VerificationCodeState.normal {
         didSet{
+            
             updateView()
+            statusDidChange(status)
         }
     }
+    
+    /// For recording status before user tapping this button.
+    /// It may be .resend or .normal
+    private var statusBeforeTapping = VerificationCodeState.normal
     
     private var nextEnableTime: Date {
         get {
@@ -153,8 +168,11 @@ class VerificationCodeControl: UIControl {
     private func commonInit() {
         // TODO: add action
         
-        let tapGestrue = UITapGestureRecognizer(target: self, action: #selector(respondsToTap(_:)))
+        let tapGestrue = UILongPressGestureRecognizer(target: self, action: #selector(respondsToTap(_:)))
+        tapGestrue.delegate = self
+        tapGestrue.minimumPressDuration = 0
         addGestureRecognizer(tapGestrue)
+        
         addSubview(textLabel)
         NSLayoutConstraint(item: textLabel,
                            attribute: .centerX,
@@ -187,7 +205,7 @@ class VerificationCodeControl: UIControl {
         }
     }
     
-    override var intrinsicContentSize: CGSize {
+    open override var intrinsicContentSize: CGSize {
         return textLabel.intrinsicContentSize
     }
     
@@ -205,6 +223,12 @@ class VerificationCodeControl: UIControl {
     
     func toNormalState() {
         status = .normal
+    }
+    
+    /// You can override this methods to update custom UI.
+    /// Called automatically when status changed and you should not call this method directly
+    open func statusDidChange(_ status: VerificationCodeState) {
+        
     }
     
     // MARK: - Private methods
@@ -259,8 +283,23 @@ class VerificationCodeControl: UIControl {
 // MARK: Action / Callback
 extension VerificationCodeControl {
     
-    @objc fileprivate func respondsToTap(_ gesture: UITapGestureRecognizer) {
+    @objc fileprivate func respondsToTap(_ gesture: UILongPressGestureRecognizer) {
         
+        if gesture.state == .began {
+            statusBeforeTapping = status
+            status = .highlighted
+        } else if gesture.state == .ended {
+            
+            /// If gesture's location is in this view
+            if bounds.contains(gesture.location(in: self)) {
+                status = .sending
+            } else {
+                
+                /// Gesture's location is out of this view
+                /// So button just turn to previous status
+                status = statusBeforeTapping
+            }
+        }
     }
     
     @objc fileprivate func respondsToTimer(_ timer: Timer) {
@@ -271,5 +310,12 @@ extension VerificationCodeControl {
             timer.invalidate()
             status = .resend
         }
+    }
+}
+
+extension VerificationCodeControl: UIGestureRecognizerDelegate {
+    
+    override open func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return [VerificationCodeState.normal, .resend].contains(status)
     }
 }

@@ -3,13 +3,6 @@
 import UIKit
 
 
-public enum VerificationCodeState {
-    case sending
-    case countingDown
-    case normal
-    case resend
-    // TODO: add highlight state
-}
 
 @IBDesignable open class VerificationCodeButton: UIView {
 
@@ -83,7 +76,9 @@ public enum VerificationCodeState {
     private func commonInit() {
         // TODO: add action
 
-        let tapGestrue = UITapGestureRecognizer(target: self, action: #selector(respondsToTap(_:)))
+        let tapGestrue = UILongPressGestureRecognizer(target: self, action: #selector(respondsToTap(_:)))
+        tapGestrue.minimumPressDuration = 0
+        tapGestrue.allowableMovement = 1
         addGestureRecognizer(tapGestrue)
 
     }
@@ -202,8 +197,17 @@ public enum VerificationCodeState {
 // MARK: Action / Callback
 extension VerificationCodeButton {
     
-    @objc fileprivate func respondsToTap(_ gesture: UITapGestureRecognizer) {
-        
+    @objc fileprivate func respondsToTap(_ gesture: UILongPressGestureRecognizer) {
+        if gesture.state == .began {
+            
+        } else if gesture.state == .ended {
+            /// If gesture's location is in this view
+            if bounds.contains(gesture.location(in: self)) {
+                
+            } else {
+                
+            }
+        }
     }
     
     @objc fileprivate func respondsToTimer(_ timer: Timer) {
