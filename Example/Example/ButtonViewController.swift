@@ -11,7 +11,7 @@ import VerificationCodeButton
 
 class ButtonViewController: UIViewController {
 
-    let button = VerificationCodeButton(when: "login")
+    let button = VerificationCodeControl(when: "login")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,23 +19,16 @@ class ButtonViewController: UIViewController {
         view.backgroundColor = UIColor.white
         button.center = view.center
         button.bounds = CGRect(x: 0, y: 0, width: 100, height: 50)
-        button.backgroundColor = UIColor.gray
       
-
-        button.set(target: self, selector: #selector(didTap))
+        button.addTarget(self, selector: #selector(countDown(_:)))
+        button.sendInterval = 10
         view.addSubview(button)
         
     }
 
-    @objc func countDown(sender: VerificationCodeButton) {
-        DispatchQueue.main.async {
+    @objc func countDown(_ sender: VerificationCodeControl) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
             sender.countDown()
-        }
-    }
-
-    @IBAction func buttonTaped(_ sender: Any) {
-        if let sender = sender as? VerificationCodeButton {
-            perform(#selector(ButtonViewController.countDown), with: sender, afterDelay: 3)
         }
     }
     
