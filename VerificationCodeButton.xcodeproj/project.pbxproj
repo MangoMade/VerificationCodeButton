@@ -8,14 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		529B526C1ECEEC3C00E0D5FB /* VerificationCodeButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 529B526A1ECEEC3C00E0D5FB /* VerificationCodeButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		529F7E501FBC2BF5000D15EC /* VerificationCodeControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529F7E4F1FBC2BF5000D15EC /* VerificationCodeControl.swift */; };
+		529F7E501FBC2BF5000D15EC /* VerificationCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529F7E4F1FBC2BF5000D15EC /* VerificationCodeButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		529B52671ECEEC3C00E0D5FB /* VerificationCodeButton.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VerificationCodeButton.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		529B526A1ECEEC3C00E0D5FB /* VerificationCodeButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VerificationCodeButton.h; sourceTree = "<group>"; };
 		529B526B1ECEEC3C00E0D5FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		529F7E4F1FBC2BF5000D15EC /* VerificationCodeControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationCodeControl.swift; sourceTree = "<group>"; };
+		529F7E4F1FBC2BF5000D15EC /* VerificationCodeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationCodeButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,7 +49,7 @@
 			isa = PBXGroup;
 			children = (
 				529B526A1ECEEC3C00E0D5FB /* VerificationCodeButton.h */,
-				529F7E4F1FBC2BF5000D15EC /* VerificationCodeControl.swift */,
+				529F7E4F1FBC2BF5000D15EC /* VerificationCodeButton.swift */,
 				529B526B1ECEEC3C00E0D5FB /* Info.plist */,
 			);
 			path = Source;
@@ -136,7 +136,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				529F7E501FBC2BF5000D15EC /* VerificationCodeControl.swift in Sources */,
+				529F7E501FBC2BF5000D15EC /* VerificationCodeButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

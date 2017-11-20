@@ -11,7 +11,7 @@ import VerificationCodeButton
 
 class ButtonViewController: UIViewController {
 
-    let button = VerificationCodeControl(when: "login")
+    let button = VerificationCodeButton(when: "login")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +26,7 @@ class ButtonViewController: UIViewController {
         
     }
 
-    @objc func countDown(_ sender: VerificationCodeControl) {
+    @objc func countDown(_ sender: VerificationCodeButton) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
             sender.countDown()
         }

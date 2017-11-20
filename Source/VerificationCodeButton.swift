@@ -1,5 +1,5 @@
 //
-//  VerificationCodeControl.swift
+//  VerificationCodeButton.swift
 //  VerificationCodeButton
 //
 //  Created by Aqua on 15/11/2017.
@@ -9,7 +9,7 @@
 import UIKit
 
 
-public enum VerificationCodeState {
+public enum ButtonState {
     case normal
     case highlighted
     case sending
@@ -17,7 +17,7 @@ public enum VerificationCodeState {
     case resend
 }
 
-open class VerificationCodeControl: UIView {
+open class VerificationCodeButton: UIView {
 
     private struct Const {
         static let userDefaultsKey = "Verification-Code-Button-Dic"
@@ -34,19 +34,21 @@ open class VerificationCodeControl: UIView {
 
     open var sendInterval: Double = 60
 
-    open private(set) var status = VerificationCodeState.normal {
+    open private(set) var state = ButtonState.normal {
         didSet{
             
             updateView()
-            statusDidChange(status)
+            stateDidChange(state)
         }
     }
     
+    public private(set) lazy var backgroundImageView = setUpBackgroundImageView()
+    
     // MARK: Private Properties
     
-    /// For recording status before user tapping this button.
+    /// For recording state before user tapping this button.
     /// It may be .resend or .normal
-    private var statusBeforeTapping = VerificationCodeState.normal
+    private var stateBeforeTapping = ButtonState.normal
     
     private var nextEnableTime: Date {
         get {
@@ -79,12 +81,12 @@ open class VerificationCodeControl: UIView {
     private var selector: Selector?
     
     /// Properties for style
-    private var texts: [VerificationCodeState: String] = VerificationCodeControl.defaultTexts()
-    private var fonts: [VerificationCodeState: UIFont] = [:]
-    private var textColors: [VerificationCodeState: UIColor] = VerificationCodeControl.defaultTextColors()
-    private var backgroundColors: [VerificationCodeState: UIColor] = VerificationCodeControl.defaultBackgroundColors()
-    private var backgroundImages: [VerificationCodeState: UIImage] = [:]
-    private var attributedStrings: [VerificationCodeState: NSAttributedString] = [:]
+    private var texts: [ButtonState: String] = VerificationCodeButton.defaultTexts()
+    private var fonts: [ButtonState: UIFont] = [:]
+    private var textColors: [ButtonState: UIColor] = VerificationCodeButton.defaultTextColors()
+    private var backgroundColors: [ButtonState: UIColor] = VerificationCodeButton.defaultBackgroundColors()
+    private var backgroundImages: [ButtonState: UIImage] = [:]
+    private var attributedStrings: [ButtonState: NSAttributedString] = [:]
     
     // MARK: - Initialization
     
@@ -149,7 +151,7 @@ open class VerificationCodeControl: UIView {
 }
 
 // MARK: - Public Methods
-extension VerificationCodeControl {
+extension VerificationCodeButton {
     
     open func addTarget(_ target: AnyObject?, selector: Selector?) {
         self.target = target
@@ -164,60 +166,97 @@ extension VerificationCodeControl {
     }
     
     open func toNormalState() {
-        status = .normal
+        state = .normal
     }
     
     /// You can override this methods to update custom UI.
-    /// Called automatically when status changed and you should not call this method directly
-    open func statusDidChange(_ status: VerificationCodeState) {
-        
+    /// Called automatically when state changed and you should not call this method directly
+    open func stateDidChange(_ state: ButtonState) {
+ 
     }
 }
 
 // MARK: - Style
 
-extension VerificationCodeControl {
+extension VerificationCodeButton {
     
-    open func text(for state: VerificationCodeState) -> String {
-        if let text = texts[status] {
+    open func setText(_ text: String?, for state: ButtonState) {
+        texts[state] = text
+        updateView()
+    }
+    
+    open func setTextColor(_ color: UIColor?, for state: ButtonState) {
+        textColors[state] = color
+        updateView()
+    }
+    
+    open func setFont(_ font: UIFont?, for state: ButtonState) {
+        fonts[state] = font
+        updateView()
+    }
+    
+    open func setImage(_ image: UIImage?, for state: ButtonState) {
+        backgroundImages[state] = image
+        updateView()
+    }
+    
+    open func setBackgroundImage(_ image: UIImage?, for state: ButtonState) {
+        backgroundImages[state] = image
+        updateView()
+    }
+    
+    open func setAttributedText(_ text: NSAttributedString?, for state: ButtonState) {
+        attributedStrings[state] = text
+        updateView()
+    }
+    
+    
+    open func text(for state: ButtonState) -> String {
+        if let text = texts[self.state] {
             return text
         } else {
-            return texts[statusBeforeTapping] ?? Default.normalText
+            return texts[stateBeforeTapping] ?? Default.normalText
         }
     }
     
-    open func textColor(for state: VerificationCodeState) -> UIColor {
-        if let color = textColors[status] {
+    open func textColor(for state: ButtonState) -> UIColor {
+        if let color = textColors[self.state] {
             return color
         } else {
-            return textColors[VerificationCodeState.normal] ?? Default.textColor
+            return textColors[ButtonState.normal] ?? Default.textColor
         }
     }
     
-    open func font(for state: VerificationCodeState) -> UIFont {
-        if let font = fonts[status] {
+    open func font(for state: ButtonState) -> UIFont {
+        if let font = fonts[self.state] {
             return font
         } else {
-            return fonts[VerificationCodeState.normal] ?? Default.font
+            return fonts[ButtonState.normal] ?? Default.font
         }
     }
     
-    open func backgroundColor(for state: VerificationCodeState) -> UIColor {
-        if let color = backgroundColors[status] {
+    open func backgroundColor(for state: ButtonState) -> UIColor {
+        if let color = backgroundColors[self.state] {
             return color
         } else {
-            return backgroundColors[VerificationCodeState.normal] ?? Default.backgroundColor
+            return backgroundColors[ButtonState.normal] ?? Default.backgroundColor
         }
     }
     
-    open func backgroundImage(for state: VerificationCodeState) -> UIImage? {
-        return nil
+    open func backgroundImage(for state: ButtonState) -> UIImage? {
+        if let image = backgroundImages[self.state] {
+            return image
+        } else if let image = backgroundImages[ButtonState.normal] {
+            return image
+        } else {
+            return nil
+        }
     }
     
-    open func attributedText(for state: VerificationCodeState) -> NSAttributedString? {
-        if let attributedString = attributedStrings[status] {
+    open func attributedText(for state: ButtonState) -> NSAttributedString? {
+        if let attributedString = attributedStrings[self.state] {
             return attributedString
-        } else if let attributedString = attributedStrings[VerificationCodeState.normal] {
+        } else if let attributedString = attributedStrings[ButtonState.normal] {
             return attributedString
         } else {
             return nil
@@ -226,27 +265,28 @@ extension VerificationCodeControl {
 }
 
 // MARK: - Private Methods
-extension VerificationCodeControl {
+extension VerificationCodeButton {
     
     fileprivate func updateView() {
         
-        if let attributedText = attributedText(for: status) {
+        if let attributedText = attributedText(for: state) {
             textLabel.attributedText = attributedText
         }
-        textLabel.text = text(for: status)
-        textLabel.font = font(for: status)
-        textLabel.textColor = textColor(for: status)
-        backgroundColor = backgroundColor(for: status)
+        textLabel.text      = text(for: state)
+        textLabel.font      = font(for: state)
+        textLabel.textColor = textColor(for: state)
+        backgroundColor     = backgroundColor(for: state)
+        backgroundImageView.image = backgroundImage(for: state)
     }
     
     fileprivate func setATimer() {
         
         if nextEnableTime.timeIntervalSinceNow > 0 {
             
-            status = .countingDown
+            state = .countingDown
             timer = Timer.scheduledTimer(timeInterval: 1,
                                          target: self,
-                                         selector: #selector(VerificationCodeControl.respondsToTimer(_:)),
+                                         selector: #selector(VerificationCodeButton.respondsToTimer(_:)),
                                          userInfo: nil,
                                          repeats: true)
             
@@ -263,29 +303,51 @@ extension VerificationCodeControl {
             textLabel.text = text
         }
     }
+    
+    
+    fileprivate func setUpBackgroundImageView() -> UIImageView {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = true
+        insertSubview(imageView, at: 0)
+        let edges = [NSLayoutAttribute.top, .left, .right, .bottom]
+        edges.forEach { (edge) in
+            NSLayoutConstraint(item: imageView,
+                               attribute: edge,
+                               relatedBy: .equal,
+                               toItem: self,
+                               attribute: edge,
+                               multiplier: 1,
+                               constant: 0).isActive = true
+        }
+        return imageView
+    }
 }
 
 // MARK: - Action / Callback
-extension VerificationCodeControl {
+extension VerificationCodeButton {
     
     @objc fileprivate func respondsToTap(_ gesture: UILongPressGestureRecognizer) {
         
         if gesture.state == .began {
-            statusBeforeTapping = status
-            status = .highlighted
+            
+            stateBeforeTapping = state
+            state = .highlighted
         } else if gesture.state == .ended {
             
             /// If gesture's location is in this view
             if bounds.contains(gesture.location(in: self)) {
-                status = .sending
+                
+                state = .sending
                 if target?.responds(to: selector) == true {
                     let _ = target?.perform(selector, with: self)
                 }
             } else {
                 
                 /// Gesture's location is out of this view
-                /// So button just turn to previous status
-                status = statusBeforeTapping
+                /// So button just turn to previous state
+                state = stateBeforeTapping
             }
         }
     }
@@ -296,16 +358,16 @@ extension VerificationCodeControl {
             updateCountingDownText(second: Int(ceil(timeInterval)))
         } else {
             timer.invalidate()
-            status = .resend
+            state = .resend
         }
     }
 }
 
 // MARK: - Private Class Methods
 
-extension VerificationCodeControl {
+extension VerificationCodeButton {
     
-    class func defaultTexts() -> [VerificationCodeState: String] {
+    class func defaultTexts() -> [ButtonState: String] {
         return [
             .normal: Default.normalText,
             .sending: "发送中",
@@ -314,7 +376,7 @@ extension VerificationCodeControl {
         ]
     }
     
-    class func defaultBackgroundColors() -> [VerificationCodeState: UIColor] {
+    class func defaultBackgroundColors() -> [ButtonState: UIColor] {
         return [
             .normal: Default.backgroundColor,
             .sending: UIColor.lightGray,
@@ -322,7 +384,7 @@ extension VerificationCodeControl {
         ]
     }
     
-    class func defaultTextColors() -> [VerificationCodeState: UIColor] {
+    class func defaultTextColors() -> [ButtonState: UIColor] {
         return [
             .normal: Default.textColor,
             .sending: UIColor.gray,
@@ -331,9 +393,9 @@ extension VerificationCodeControl {
     }
 }
 
-extension VerificationCodeControl: UIGestureRecognizerDelegate {
+extension VerificationCodeButton: UIGestureRecognizerDelegate {
     
     open override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return [VerificationCodeState.normal, .resend].contains(status)
+        return [ButtonState.normal, .resend].contains(state)
     }
 }
