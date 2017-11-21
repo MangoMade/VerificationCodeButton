@@ -26,7 +26,7 @@ open class VerificationCodeButton: UIView {
     private struct Default {
         static let font = UIFont.systemFont(ofSize: 14)
         static let normalText = "发送验证码"
-        static let textColor = UIColor.black
+        static let textColor = UIColor(hex: 0x157EFB)
         static let backgroundColor = UIColor.white
     }
     
@@ -47,7 +47,7 @@ open class VerificationCodeButton: UIView {
     // MARK: Private Properties
     
     /// For recording state before user tapping this button.
-    /// It may be .resend or .normal
+    /// It maybe .resend or .normal
     private var stateBeforeTapping = ButtonState.normal
     
     private var nextEnableTime: Date {
@@ -148,10 +148,8 @@ open class VerificationCodeButton: UIView {
     open override var intrinsicContentSize: CGSize {
         return textLabel.intrinsicContentSize
     }
-}
 
-// MARK: - Public Methods
-extension VerificationCodeButton {
+    // MARK: - Public Methods
     
     open func addTarget(_ target: AnyObject?, selector: Selector?) {
         self.target = target
@@ -174,11 +172,8 @@ extension VerificationCodeButton {
     open func stateDidChange(_ state: ButtonState) {
  
     }
-}
 
-// MARK: - Style
-
-extension VerificationCodeButton {
+    // MARK: - Style
     
     open func setText(_ text: String?, for state: ButtonState) {
         texts[state] = text
@@ -195,8 +190,8 @@ extension VerificationCodeButton {
         updateView()
     }
     
-    open func setImage(_ image: UIImage?, for state: ButtonState) {
-        backgroundImages[state] = image
+    open func setBackgroundColor(_ color: UIColor?, for state: ButtonState) {
+        backgroundColors[state] = color
         updateView()
     }
     
@@ -262,12 +257,11 @@ extension VerificationCodeButton {
             return nil
         }
     }
-}
-
-// MARK: - Private Methods
-extension VerificationCodeButton {
     
-    fileprivate func updateView() {
+    /// Update view's style
+    /// Override this method and call super's method, if you want to add some custom style properties
+    /// The GradientVerificationCodeButton is a example.
+    open func updateView() {
         
         if let attributedText = attributedText(for: state) {
             textLabel.attributedText = attributedText
@@ -278,8 +272,12 @@ extension VerificationCodeButton {
         backgroundColor     = backgroundColor(for: state)
         backgroundImageView.image = backgroundImage(for: state)
     }
+}
+
+// MARK: - Private Methods
+fileprivate extension VerificationCodeButton {
     
-    fileprivate func setATimer() {
+    func setATimer() {
         
         if nextEnableTime.timeIntervalSinceNow > 0 {
             
@@ -294,7 +292,7 @@ extension VerificationCodeButton {
         }
     }
     
-    fileprivate func updateCountingDownText(second: Int) {
+    func updateCountingDownText(second: Int) {
         if let attributedText = attributedText(for: .countingDown) {
             let text = String(format: attributedText.string, second)
             textLabel.attributedText = NSAttributedString(string: text, attributes: attributedText.attributes(at: 0, effectiveRange: nil))
@@ -304,12 +302,11 @@ extension VerificationCodeButton {
         }
     }
     
-    
-    fileprivate func setUpBackgroundImageView() -> UIImageView {
+    func setUpBackgroundImageView() -> UIImageView {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         insertSubview(imageView, at: 0)
         let edges = [NSLayoutAttribute.top, .left, .right, .bottom]
         edges.forEach { (edge) in
@@ -326,9 +323,9 @@ extension VerificationCodeButton {
 }
 
 // MARK: - Action / Callback
-extension VerificationCodeButton {
+fileprivate extension VerificationCodeButton {
     
-    @objc fileprivate func respondsToTap(_ gesture: UILongPressGestureRecognizer) {
+    @objc func respondsToTap(_ gesture: UILongPressGestureRecognizer) {
         
         if gesture.state == .began {
             
@@ -352,7 +349,7 @@ extension VerificationCodeButton {
         }
     }
     
-    @objc fileprivate func respondsToTimer(_ timer: Timer) {
+    @objc func respondsToTimer(_ timer: Timer) {
         let timeInterval = nextEnableTime.timeIntervalSinceNow
         if timeInterval > 0 {
             updateCountingDownText(second: Int(ceil(timeInterval)))
@@ -365,7 +362,7 @@ extension VerificationCodeButton {
 
 // MARK: - Private Class Methods
 
-extension VerificationCodeButton {
+fileprivate extension VerificationCodeButton {
     
     class func defaultTexts() -> [ButtonState: String] {
         return [
@@ -379,16 +376,14 @@ extension VerificationCodeButton {
     class func defaultBackgroundColors() -> [ButtonState: UIColor] {
         return [
             .normal: Default.backgroundColor,
-            .sending: UIColor.lightGray,
-            .countingDown: UIColor.lightGray,
         ]
     }
     
     class func defaultTextColors() -> [ButtonState: UIColor] {
         return [
             .normal: Default.textColor,
-            .sending: UIColor.gray,
-            .countingDown: UIColor.gray,
+            .sending: UIColor(hex: 0xD1D1D1),
+            .countingDown: UIColor(hex: 0xD1D1D1),
         ]
     }
 }

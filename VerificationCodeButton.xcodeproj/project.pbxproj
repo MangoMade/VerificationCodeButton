@@ -7,11 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		52625A981FC2ADCE001ED335 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52625A971FC2ADCE001ED335 /* UIColor+Extension.swift */; };
+		52625A9C1FC2E106001ED335 /* GradientVerificationCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52625A9B1FC2E106001ED335 /* GradientVerificationCodeButton.swift */; };
 		529B526C1ECEEC3C00E0D5FB /* VerificationCodeButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 529B526A1ECEEC3C00E0D5FB /* VerificationCodeButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		529F7E501FBC2BF5000D15EC /* VerificationCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529F7E4F1FBC2BF5000D15EC /* VerificationCodeButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		52625A971FC2ADCE001ED335 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		52625A9B1FC2E106001ED335 /* GradientVerificationCodeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientVerificationCodeButton.swift; sourceTree = "<group>"; };
 		529B52671ECEEC3C00E0D5FB /* VerificationCodeButton.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VerificationCodeButton.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		529B526A1ECEEC3C00E0D5FB /* VerificationCodeButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VerificationCodeButton.h; sourceTree = "<group>"; };
 		529B526B1ECEEC3C00E0D5FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -50,6 +54,8 @@
 			children = (
 				529B526A1ECEEC3C00E0D5FB /* VerificationCodeButton.h */,
 				529F7E4F1FBC2BF5000D15EC /* VerificationCodeButton.swift */,
+				52625A9B1FC2E106001ED335 /* GradientVerificationCodeButton.swift */,
+				52625A971FC2ADCE001ED335 /* UIColor+Extension.swift */,
 				529B526B1ECEEC3C00E0D5FB /* Info.plist */,
 			);
 			path = Source;
@@ -136,7 +142,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52625A9C1FC2E106001ED335 /* GradientVerificationCodeButton.swift in Sources */,
 				529F7E501FBC2BF5000D15EC /* VerificationCodeButton.swift in Sources */,
+				52625A981FC2ADCE001ED335 /* UIColor+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
