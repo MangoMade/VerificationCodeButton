@@ -33,7 +33,7 @@ open class VerificationCodeButton: UIView {
     // MARK: Public Properties
 
     open var sendInterval: Double = 60
-
+    
     open private(set) var state = ButtonState.normal {
         didSet{
             
@@ -41,6 +41,10 @@ open class VerificationCodeButton: UIView {
             stateDidChange(state)
         }
     }
+    
+    /// 是否忽略上次发送，
+    /// 如果为true，这个按钮deinit之后再出现，不会接着上次倒计时的时间
+    public var shouldIgnoreLastSend = false
     
     public private(set) lazy var backgroundImageView = setUpBackgroundImageView()
     
@@ -138,7 +142,9 @@ open class VerificationCodeButton: UIView {
     open override func willMove(toWindow newWindow: UIWindow?) {
         super.willMove(toWindow: newWindow)
         if newWindow?.isKeyWindow == true {
-            setATimer()
+            if !shouldIgnoreLastSend {
+                setATimer()
+            }
         } else {
             timer?.invalidate()
             timer = nil
